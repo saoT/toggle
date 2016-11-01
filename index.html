@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Toggle classes</title>
+  <style type="text/css">
+
+    .toggle-class {
+      background-color: red;
+      width:500px;
+      height :500px;
+    }
+
+    .toggle-class.blue  {
+      background-color: blue;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="my-element" class="toggle-class"></div>
+
+  <script type="text/javascript">
+
+    // Je récupère mon élément
+    var myElement = document.getElementById('my-toggle');
+
+
+    // Quand je clique sur mon élément
+    myElement.onclick = function () {
+      myElement.classList.toggle('blue');
+    }
+
+
+    /////------------------- PLUSIEURS EVENEMENT APPELLE LA MEME FONCTION ------------------/////
+    // Solution numéro 1
+    /************************************** AUTOMATISER ****************************************/
+
+    //Si je veux aller plus loin.
+    //Je peux créer une fonction qui me permet de bind 2 event listeners sur UN SEUL MEME élément
+    //Cette fonction prend 3 arguments.
+    //el : l'élément -> myElement.
+    //s : un string avec tout les évènement séparés par un virgule -> 'mouseenter mouseleave'.
+    //fn : la function à éxécuter -> toggle.
+    function addListenerMulti(el, s, fn) {
+      //n récupère la string et on la sépare au niveau des espaces. ça nous retourne un array ici ['mousenter', 'mouseleave']
+      var evts = s.split(' ');
+      //Pour chaque évènement du tableau (ici il y en a 2)
+      for (var i=0, iLen=evts.length; i<iLen; i++) {
+        //on ajoute ces évènements à myElement.
+        el.addEventListener(evts[i], fn, false);
+      }
+    }
+
+    //On appelle la fonction de binding pouyr mouseenter et mouseleave
+    addListenerMulti(myElement, 'mouseenter mouseleave', function () {
+      myElement.classList.toggle('blue');
+    });
+
+    // Solution numéro 2
+    /********************************* A LA MANO *********************************/
+
+    //j'ajoute un event listener à l'élément myElement qui espionne les mouseenter
+    myElement.addEventListener('mouseenter', function () {
+      myElement.classList.toggle('blue');
+    });
+
+    //j'ajoute un event listener à l'élément myElement qui espionne les mouseleave
+    myElement.addEventListener('mouseleave', function () {
+      myElement.classList.toggle('blue');
+    });
+
+  </script>
+</body>
+</html>
